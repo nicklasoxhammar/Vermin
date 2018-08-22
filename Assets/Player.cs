@@ -7,6 +7,8 @@ public class Player : MonoBehaviour {
     public int rightArm = 0;
     public int leftArm = 1;
 
+    public int moveDistance = 4;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -23,15 +25,15 @@ public class Player : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.LeftArrow)) {
 
-            if (transform.position.x > -4) {
-                transform.position += Vector3.left * 4;
+            if (transform.position.x > -moveDistance) {
+                transform.position += Vector3.left * moveDistance;
             }
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow)) {
 
-            if (transform.position.x < 4) {
-                transform.position += Vector3.right * 4;
+            if (transform.position.x < moveDistance) {
+                transform.position += Vector3.right * moveDistance;
             }
         }
 
@@ -42,12 +44,12 @@ public class Player : MonoBehaviour {
 
         if(leftOrRight == rightArm) {
             Transform arm = this.gameObject.transform.GetChild(rightArm);
-            arm.Rotate(0f, 0f, -57f);
+            arm.Rotate(0.0f, 0.0f, -57.0f);
         }
 
         if(leftOrRight == leftArm) {
             Transform arm = this.gameObject.transform.GetChild(leftArm);
-            arm.Rotate(0f, 0f, 57f);
+            arm.Rotate(0.0f, 0.0f, 57.0f);
        }
 
         StartCoroutine(ResetArm(leftOrRight));
@@ -56,16 +58,16 @@ public class Player : MonoBehaviour {
     }
 
     IEnumerator ResetArm(int leftOrRight) {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(0.2f);
 
         if (leftOrRight == rightArm) {
             Transform arm = this.gameObject.transform.GetChild(rightArm);
-            arm.Rotate(0f, 0f, 57f);     
+            arm.Rotate(0.0f, 0.0f, 57.0f);     
         }
 
         if (leftOrRight == leftArm) {
             Transform arm = this.gameObject.transform.GetChild(leftArm);
-            arm.Rotate(0f, 0f, -57f);
+            arm.Rotate(0.0f, 0.0f, -57.0f);
 
         }
 

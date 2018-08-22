@@ -5,18 +5,19 @@ using UnityEngine;
 public class SpawnPoint : MonoBehaviour {
 
     bool enemySpawned = false;
+   
+    public GameObject enemy;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    void SpawnEnemy() {
+    public bool SpawnEnemy() {
 
+        if (this.transform.childCount == 0) {
+            GameObject spawnedEnemy = Instantiate(enemy, transform.position, transform.rotation);
+            spawnedEnemy.transform.parent = transform;
+            return true;
+        }
+
+        return false;
+        
     }
 }

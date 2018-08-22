@@ -7,9 +7,12 @@ public class GameManager : MonoBehaviour {
     public static GameManager gm;
 
     int points = 0;
+    int lives = 3;
 
-    public List<GameObject> spawnPoints;
-    public List<GameObject> smashPoints;
+    float spawnTime = 2.0f;
+    public float enemySpeed = 1.5f;
+
+    public List<SpawnPoint> spawnPoints;
     public Player player;
 
     private void Awake() {
@@ -19,36 +22,72 @@ public class GameManager : MonoBehaviour {
 
     }
 
-    // Use this for initialization
     void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    public void EnemyAtSmashPoint(Enemy enemy) {
-
-        if(player.transform.position.x == enemy.transform.position.x - 4) {
-
-            player.RotateArm(player.rightArm);
-            Smash(enemy);
-        }
-
-        if (player.transform.position.x == enemy.transform.position.x + 4) {
-            player.RotateArm(player.leftArm);
-
-            Smash(enemy);
-
-        }
+        StartCoroutine("SpawnEnemies");
 
     }
 
-    void Smash(Enemy enemy) {
-        points++;
+    public void EnemyAtSmashPoint(Enemy enemy) {
+
+        if(player.transform.position.x == enemy.transform.position.x - player.moveDistance) {
+            points++;
+            player.RotateArm(player.rightArm);
+            StartCoroutine(DestroyEnemy(enemy));
+
+        }else if (player.transform.position.x == enemy.transform.position.x + player.moveDistance) {
+            points++;
+            player.RotateArm(player.leftArm);
+            StartCoroutine(DestroyEnemy(enemy));
+
+        }else {
+        
+            lives--;
+            enemy.sprite.color = Color.red;
+            StartCoroutine(DestroyEnemy(enemy));
+
+        }
+
+
+    }
+
+    IEnumerator DestroyEnemy(Enemy enemy) {
+
+        if (spawnTime > 0.1f) {
+            spawnTime -= 0.01f;
+        }
+
+        if (enemySpeed > 0.5f) {
+            enemySpeed -= 0.005f;
+        }
+
+        yield return new WaitForSeconds(0.3f);
+
+        enemy.DestroyMarkers();
         Destroy(enemy.gameObject);
-       
+    }
+
+   
+
+    IEnumerator SpawnEnemies() {
+
+        bool enemySpawned = false;
+
+        int i = 0;
+
+        while (!enemySpawned) {
+            i++;
+            enemySpawned = spawnPoints[Random.Range(0, spawnPoints.Count)].SpawnEnemy();
+
+            if (i == 4) {
+                break;
+            }
+    }
+
+        yield return new WaitForSeconds(spawnTime);
+        StartCoroutine("SpawnEnemies");
+
+
+
     }
 }
