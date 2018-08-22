@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    public int rightArm = 0;
+    public int leftArm = 1;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -34,6 +37,40 @@ public class Player : MonoBehaviour {
 
 
     }
+
+    public void RotateArm(int leftOrRight) {
+
+        if(leftOrRight == rightArm) {
+            Transform arm = this.gameObject.transform.GetChild(rightArm);
+            arm.Rotate(0f, 0f, -57f);
+        }
+
+        if(leftOrRight == leftArm) {
+            Transform arm = this.gameObject.transform.GetChild(leftArm);
+            arm.Rotate(0f, 0f, 57f);
+       }
+
+        StartCoroutine(ResetArm(leftOrRight));
+
+
+    }
+
+    IEnumerator ResetArm(int leftOrRight) {
+        yield return new WaitForSeconds(0.4f);
+
+        if (leftOrRight == rightArm) {
+            Transform arm = this.gameObject.transform.GetChild(rightArm);
+            arm.Rotate(0f, 0f, 57f);     
+        }
+
+        if (leftOrRight == leftArm) {
+            Transform arm = this.gameObject.transform.GetChild(leftArm);
+            arm.Rotate(0f, 0f, -57f);
+
+        }
+
+    }
+
 
    
 }
