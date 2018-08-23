@@ -11,12 +11,13 @@ public class GameManager : MonoBehaviour {
     int points = 0;
     int lives = 3;
 
-    float spawnTime = 2.0f;
-    public float enemySpeed = 1.5f;
+    float spawnTime = 1.5f;
+    public float enemySpeed = 1.0f;
 
     public Text pointsText;
     public GameObject lifeImages;
     public GameObject gameOverScreen;
+    public GameObject highScoreScreen;
 
     public List<SpawnPoint> spawnPoints;
     public Player player;
@@ -31,7 +32,6 @@ public class GameManager : MonoBehaviour {
     void Start () {
 
         StartCoroutine(SpawnEnemies());
-
     }
 
     public void EnemyAtSmashPoint(Enemy enemy) {
@@ -69,11 +69,11 @@ public class GameManager : MonoBehaviour {
     IEnumerator DestroyEnemy(Enemy enemy) {
 
         if (spawnTime > 0.1f) {
-            spawnTime -= 0.01f;
+            spawnTime -= 0.02f;
         }
 
         if (enemySpeed > 0.5f) {
-            enemySpeed -= 0.005f;
+            enemySpeed -= 0.01f;
         }
 
         yield return new WaitForSeconds(0.3f);
@@ -111,8 +111,21 @@ public class GameManager : MonoBehaviour {
             s.stopSpawnedEnemy();
         }
 
-        gameOverScreen.SetActive(true);
+        if (points > PlayerPrefs.GetInt("highscore", 0)) {
+            NewHighScore();
+        }
+        else {
+            gameOverScreen.SetActive(true);
+        }
 
+
+    }
+
+    void NewHighScore() {
+        PlayerPrefs.SetInt("highscore", points);
+        highScoreScreen.SetActive(true);
+        highScoreScreen.GetComponentInChildren<Text>().text = "New High Score: " + PlayerPrefs.GetInt("highscore", 0) + "!";
+        
     }
 
     public void RestartGame() {
