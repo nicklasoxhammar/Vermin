@@ -16,30 +16,49 @@ public class Player : MonoBehaviour {
 
 	void Update () {
 
-        if (!defeated) {
+        /*if (!defeated) {
             Move();
-        }
+        }*/
 		
 	}
 
-    void Move() {
+    public void Move(string direction) {
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+        if (defeated) {
+            return;
+        }
+
+        if (direction.Equals("Left")) {
 
             if (transform.position.x > -moveDistance) {
                 transform.position += Vector3.left * moveDistance;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.RightArrow)) {
+        if (direction.Equals("Right")) {
 
             if (transform.position.x < moveDistance) {
                 transform.position += Vector3.right * moveDistance;
             }
         }
 
+        /* if (Input.GetKeyDown(KeyCode.LeftArrow)) {
+
+             if (transform.position.x > -moveDistance) {
+                 transform.position += Vector3.left * moveDistance;
+             }
+         }
+
+         if (Input.GetKeyDown(KeyCode.RightArrow)) {
+
+             if (transform.position.x < moveDistance) {
+                 transform.position += Vector3.right * moveDistance;
+             }
+         }*/
+
 
     }
+
 
     public void Smash(int leftOrRight) {
         gameObject.GetComponent<AudioSource>().Play();

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour {
-
-    bool enemySpawned = false;
    
     public GameObject enemy;
     GameObject spawnedEnemy;
