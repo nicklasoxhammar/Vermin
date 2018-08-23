@@ -45,8 +45,10 @@ public class Enemy : MonoBehaviour {
 
             transform.position += Vector3.up;
 
-            GameObject _marker = Instantiate(marker, transform.position, transform.rotation);
-            markers.Add(_marker);
+            if (transform.position.y < -1) {
+                GameObject _marker = Instantiate(marker, transform.position, transform.rotation);
+                markers.Add(_marker);
+            }
 
         }
         
@@ -57,6 +59,10 @@ public class Enemy : MonoBehaviour {
         foreach(GameObject m in markers) {
             Destroy(m);
         }
+    }
+
+    private void OnDestroy() {
+        DestroyMarkers();
     }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour {
 
     public Text pointsText;
     public GameObject lifeImages;
+    public GameObject gameOverScreen;
 
     public List<SpawnPoint> spawnPoints;
     public Player player;
@@ -28,7 +30,7 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
 
-        StartCoroutine("SpawnEnemies");
+        StartCoroutine(SpawnEnemies());
 
     }
 
@@ -36,24 +38,24 @@ public class GameManager : MonoBehaviour {
 
         if(player.transform.position.x == enemy.transform.position.x - player.moveDistance) {
             points++;
-            player.RotateArm(player.rightArm);
+            player.Smash(player.rightArm);
             StartCoroutine(DestroyEnemy(enemy));
 
         }else if (player.transform.position.x == enemy.transform.position.x + player.moveDistance) {
             points++;
-            player.RotateArm(player.leftArm);
+            player.Smash(player.leftArm);
             StartCoroutine(DestroyEnemy(enemy));
 
         }else {
 
             lives--;
             enemy.sprite.color = Color.red;
+            enemy.gameObject.GetComponent<AudioSource>().Play();
             StartCoroutine(DestroyEnemy(enemy));
             lifeImages.transform.GetChild(lives).GetComponent<Image>().color = Color.black;
 
             if (lives == 0) {
-                Debug.Log("GAME OVER!");
-                StopAllCoroutines();
+                GameOver();
             }
 
 
@@ -75,8 +77,6 @@ public class GameManager : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(0.3f);
-
-        enemy.DestroyMarkers();
         Destroy(enemy.gameObject);
     }
 
@@ -98,9 +98,24 @@ public class GameManager : MonoBehaviour {
     }
 
         yield return new WaitForSeconds(spawnTime);
-        StartCoroutine("SpawnEnemies");
+        StartCoroutine(SpawnEnemies());
 
+    }
 
+    void GameOver() {
+        gameObject.GetComponent<AudioSource>().Play();
+        StopAllCoroutines();
+        player.Defeated();
 
+        foreach(SpawnPoint s in spawnPoints) {
+            s.stopSpawnedEnemy();
+        }
+
+        gameOverScreen.SetActive(true);
+
+    }
+
+    public void RestartGame() {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

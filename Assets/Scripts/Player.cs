@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
-    public int rightArm = 0;
-    public int leftArm = 1;
+    [HideInInspector] public int rightArm = 0;
+    [HideInInspector] public int leftArm = 1;
+    int head = 2;
+
+    bool defeated = false;
 
     public int moveDistance = 4;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
+    public float rotationSpeed = 1f;
+
 	void Update () {
 
-        Move();
+        if (!defeated) {
+            Move();
+        }
 		
 	}
 
@@ -40,9 +41,10 @@ public class Player : MonoBehaviour {
 
     }
 
-    public void RotateArm(int leftOrRight) {
+    public void Smash(int leftOrRight) {
+        gameObject.GetComponent<AudioSource>().Play();
 
-        if(leftOrRight == rightArm) {
+        if (leftOrRight == rightArm) {
             Transform arm = this.gameObject.transform.GetChild(rightArm);
             arm.Rotate(0.0f, 0.0f, -57.0f);
         }
@@ -68,6 +70,29 @@ public class Player : MonoBehaviour {
         if (leftOrRight == leftArm) {
             Transform arm = this.gameObject.transform.GetChild(leftArm);
             arm.Rotate(0.0f, 0.0f, -57.0f);
+
+        }
+
+    }
+
+
+    public void Defeated() {
+
+        defeated = true;
+
+        StartCoroutine(defeatedStance());
+
+    }
+
+    IEnumerator defeatedStance() {
+
+        for (int i = 0; i < 3; i++) {
+
+            gameObject.transform.GetChild(rightArm).Rotate(0.0f, 0.0f, -35.0f);
+            gameObject.transform.GetChild(leftArm).Rotate(0.0f, 0.0f, 35.0f);
+            gameObject.transform.GetChild(head).Rotate(0.0f, 0.0f, -20.0f);
+
+            yield return new WaitForSeconds(0.5f);
 
         }
 
