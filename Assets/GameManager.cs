@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -11,6 +12,9 @@ public class GameManager : MonoBehaviour {
 
     float spawnTime = 2.0f;
     public float enemySpeed = 1.5f;
+
+    public Text pointsText;
+    public GameObject lifeImages;
 
     public List<SpawnPoint> spawnPoints;
     public Player player;
@@ -41,12 +45,21 @@ public class GameManager : MonoBehaviour {
             StartCoroutine(DestroyEnemy(enemy));
 
         }else {
-        
+
             lives--;
             enemy.sprite.color = Color.red;
             StartCoroutine(DestroyEnemy(enemy));
+            lifeImages.transform.GetChild(lives).GetComponent<Image>().color = Color.black;
+
+            if (lives == 0) {
+                Debug.Log("GAME OVER!");
+                StopAllCoroutines();
+            }
+
 
         }
+
+        pointsText.text = points.ToString();
 
 
     }
