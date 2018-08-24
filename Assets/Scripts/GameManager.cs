@@ -68,11 +68,11 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator DestroyEnemy(Enemy enemy) {
 
-        if (spawnTime > 0.1f) {
+        if (spawnTime > 0.8f) {
             spawnTime -= 0.02f;
         }
 
-        if (enemySpeed > 0.5f) {
+        if (enemySpeed > 0.3f) {
             enemySpeed -= 0.01f;
         }
 

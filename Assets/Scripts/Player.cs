@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour {
 
@@ -16,46 +17,31 @@ public class Player : MonoBehaviour {
 
 	void Update () {
 
-        /*if (!defeated) {
-            Move();
-        }*/
-		
-	}
+        Move();
 
-    public void Move(string direction) {
+    }
+
+    public void Move() {
 
         if (defeated) {
             return;
         }
 
-        if (direction.Equals("Left")) {
+        if (CrossPlatformInputManager.GetButtonDown("Left")) {
 
             if (transform.position.x > -moveDistance) {
                 transform.position += Vector3.left * moveDistance;
             }
+
         }
 
-        if (direction.Equals("Right")) {
+        if (CrossPlatformInputManager.GetButtonDown("Right")) {
 
             if (transform.position.x < moveDistance) {
                 transform.position += Vector3.right * moveDistance;
             }
+
         }
-
-        /* if (Input.GetKeyDown(KeyCode.LeftArrow)) {
-
-             if (transform.position.x > -moveDistance) {
-                 transform.position += Vector3.left * moveDistance;
-             }
-         }
-
-         if (Input.GetKeyDown(KeyCode.RightArrow)) {
-
-             if (transform.position.x < moveDistance) {
-                 transform.position += Vector3.right * moveDistance;
-             }
-         }*/
-
 
     }
 

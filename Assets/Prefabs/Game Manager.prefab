@@ -151,6 +151,7 @@ MonoBehaviour:
   pointsText: {fileID: 0}
   lifeImages: {fileID: 0}
   gameOverScreen: {fileID: 0}
+  highScoreScreen: {fileID: 0}
   spawnPoints:
   - {fileID: 0}
   - {fileID: 0}
