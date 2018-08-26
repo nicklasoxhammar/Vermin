@@ -36,12 +36,12 @@ public class GameManager : MonoBehaviour {
 
     public void EnemyAtSmashPoint(Enemy enemy) {
 
-        if(player.transform.position.x == enemy.transform.position.x - player.moveDistance) {
+        if(Mathf.Approximately(player.transform.position.x, enemy.transform.position.x - player.moveDistance)) {
             points++;
             player.Smash(player.rightArm);
             StartCoroutine(DestroyEnemy(enemy));
 
-        }else if (player.transform.position.x == enemy.transform.position.x + player.moveDistance) {
+        }else if (Mathf.Approximately(player.transform.position.x, enemy.transform.position.x + player.moveDistance)) {
             points++;
             player.Smash(player.leftArm);
             StartCoroutine(DestroyEnemy(enemy));
