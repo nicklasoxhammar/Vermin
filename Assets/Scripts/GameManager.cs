@@ -72,7 +72,7 @@ public class GameManager : MonoBehaviour {
             spawnTime -= 0.02f;
         }
 
-        if (enemySpeed > 0.3f) {
+        if (enemySpeed > 0.5f) {
             enemySpeed -= 0.02f;
         }
 
