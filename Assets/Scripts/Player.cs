@@ -51,11 +51,11 @@ public class Player : MonoBehaviour {
         gameObject.GetComponent<AudioSource>().Play();
 
         if (leftOrRight == rightArm) {
-            gameObject.transform.GetChild(rightArm).Rotate(0.0f, 0.0f, -57.0f);
+            gameObject.transform.GetChild(rightArm).Rotate(0.0f, 0.0f, -47.0f);
         }
 
         if(leftOrRight == leftArm) {
-            gameObject.transform.GetChild(leftArm).Rotate(0.0f, 0.0f, 57.0f);
+            gameObject.transform.GetChild(leftArm).Rotate(0.0f, 0.0f, 47.0f);
        }
 
         StartCoroutine(ResetArm(leftOrRight));
@@ -98,11 +98,11 @@ public class Player : MonoBehaviour {
 
         defeated = true;
 
-        StartCoroutine(defeatedStance());
+        StartCoroutine(DefeatedStance());
 
     }
 
-    IEnumerator defeatedStance() {
+    IEnumerator DefeatedStance() {
 
         gameObject.transform.GetChild(rightLeg).rotation = Quaternion.identity;
         gameObject.transform.GetChild(leftLeg).rotation = Quaternion.identity;

@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour {
     public GameObject gameOverScreen;
     public GameObject highScoreScreen;
 
+    private float difficultyMultiplier = 1.0f;
+
     public List<SpawnPoint> spawnPoints;
     public Player player;
 
@@ -40,16 +42,19 @@ public class GameManager : MonoBehaviour {
             points++;
             player.Smash(player.rightArm);
             StartCoroutine(DestroyEnemy(enemy));
+            enemy.transform.GetChild(0).gameObject.SetActive(true);
 
         }else if (Mathf.Approximately(player.transform.position.x, enemy.transform.position.x + player.moveDistance)) {
             points++;
             player.Smash(player.leftArm);
             StartCoroutine(DestroyEnemy(enemy));
+            enemy.transform.GetChild(0).gameObject.SetActive(true);
 
-        }else {
+        }
+        else {
 
             lives--;
-            enemy.sprite.color = Color.red;
+            enemy.sprite.color = new Color(250.0f, 0.0f, 0.0f, 0.8f);
             enemy.gameObject.GetComponent<AudioSource>().Play();
             StartCoroutine(DestroyEnemy(enemy));
             lifeImages.transform.GetChild(lives).GetComponent<Image>().color = Color.black;
@@ -68,12 +73,20 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator DestroyEnemy(Enemy enemy) {
 
-        if (spawnTime > 0.6f) {
-            spawnTime -= 0.02f;
+        if (spawnTime > 1.0f) {
+            difficultyMultiplier = 2.0f;
+        }else if(spawnTime > 0.75) {
+            difficultyMultiplier = 1.0f;
+        }else {
+            difficultyMultiplier = 0.5f;
+        }
+
+        if (spawnTime > 0.5f) {
+            spawnTime -= 0.02f * difficultyMultiplier;
         }
 
         if (enemySpeed > 0.5f) {
-            enemySpeed -= 0.02f;
+            enemySpeed -= 0.02f * difficultyMultiplier;
         }
 
         yield return new WaitForSeconds(0.3f);
@@ -108,7 +121,7 @@ public class GameManager : MonoBehaviour {
         player.Defeated();
 
         foreach(SpawnPoint s in spawnPoints) {
-            s.stopSpawnedEnemy();
+            s.StopSpawnedEnemy();
         }
 
         if (points > PlayerPrefs.GetInt("highscore", 0)) {

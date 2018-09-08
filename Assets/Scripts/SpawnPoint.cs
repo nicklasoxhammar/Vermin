@@ -20,7 +20,7 @@ public class SpawnPoint : MonoBehaviour {
         
     }
 
-    public void stopSpawnedEnemy() {
+    public void StopSpawnedEnemy() {
         Destroy(spawnedEnemy);
     }
 }
